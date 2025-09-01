@@ -1,4 +1,3 @@
-#include "Constants.h"
 #include <stdint.h>
 #include <Arduino.h>
 
@@ -7,11 +6,16 @@
 
 class SerialManager
 {
+  private:
+  bool m_Debug;
+
   public:
-  SerialManager(unsigned long BaudRate);
+  SerialManager(unsigned long BaudRate, bool Debug = false);
   void WriteString(char* Message);
   void WriteString(char Message);
   void WriteDebug(char* Message);
+  bool IsDataAvailable();
+  uint8_t ReadByte();
 };
 
 #endif // SERIALMANAGER_H

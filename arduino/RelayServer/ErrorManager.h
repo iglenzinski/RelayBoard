@@ -1,9 +1,8 @@
-#include "Constants.h"
 #include <Arduino.h>
 #include "avr/io.h"
 
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef ERRORMANAGER_H
+#define ERRORMANAGER_H
 
 
 #define ERROR_INVALID_COMMAND 10
@@ -25,4 +24,4 @@ public:
   void BlinkInitErrorLoop(int ErrorCode);
 };
 
-#endif // ERROR_H
+#endif // ERRORMANAGER_H

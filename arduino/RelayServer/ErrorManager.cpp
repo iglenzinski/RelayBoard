@@ -1,4 +1,4 @@
-#include "Errors.h"
+#include "ErrorManager.h"
 
 ErrorModule::ErrorModule(){
   DDRB |= (1 << PB7 );
