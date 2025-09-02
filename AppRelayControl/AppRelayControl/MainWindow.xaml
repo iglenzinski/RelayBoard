@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppRelayControl"
         mc:Ignorable="d"
-        Title="MainWindow" Height="624" Width="772">
+        Title="Relay Controller" Height="624" Width="772">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">

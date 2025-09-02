@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace AppRelayControl
 {
@@ -22,13 +23,30 @@ namespace AppRelayControl
         SerialPort? Port;
         List<Button> ButtonList = [];
 
+        const int RELAY_NUM_PART = 0;
+        const int RELAY_NAME_PART = 1;
+
+
         public MainWindow()
         {
             InitializeComponent();
             cboComPort.ItemsSource = SerialPort.GetPortNames();
+            List<string> FileLines = new List<string>(); ;
+
+            if (File.Exists("RelayDefinitions.csv"))
+            {
+                FileLines = [.. File.ReadAllLines("RelayDefinitions.csv")];
+            }
 
             for (int i = 1; i <= 16; i++)
             {
+                string[]? LineParts = null;
+                foreach (string Line in FileLines)
+                {
+                    LineParts = Line.Split(',');
+                    if (int.Parse(LineParts[RELAY_NUM_PART]) == i) { break; }
+                }
+
                 StackPanel tmpStackPanel = new()
                 {
                     Orientation = Orientation.Vertical,
@@ -39,8 +57,13 @@ namespace AppRelayControl
 
                 Label tmpLabel = new()
                 {
-                    Content = "Relay " + i.ToString(),
+                    Content = "Relay " + i.ToString()
                 };
+
+                if (LineParts != null)
+                { 
+                    tmpLabel.Content = LineParts[RELAY_NAME_PART] + "(" + tmpLabel.Content + ")";
+                }
 
                 Button tmpButton = new()
                 {
