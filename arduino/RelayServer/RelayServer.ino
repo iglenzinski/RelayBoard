@@ -89,11 +89,38 @@ void setup() {
   }
 }
 
+uint8_t Command = 0;
+uint8_t Relay = 0;
+
 void loop() {
   if(SerialMgr->IsDataAvailable())
   {
-    uint8_t val = SerialMgr->ReadByte()-48;
-    Serial.println(val);
-    RelayMgr->ToggleRelay(val);
+    Command = SerialMgr->ReadByte();
+    if (Command == 1)
+    {
+      delay(20);
+      Relay = SerialMgr->ReadByte();
+      RelayMgr->ToggleRelay(Relay);
+    }
+    else if (Command == 2)
+    {
+      delay(20);
+      Relay = SerialMgr->ReadByte();
+      RelayMgr->TurnRelayOn(Relay);      
+    }    
+    else if (Command == 3)
+    {
+      delay(20);
+      Relay = SerialMgr->ReadByte();
+      RelayMgr->TurnRelayOff(Relay);
+    }
+    else if (Command == 4)
+    {
+      RelayMgr->TurnAllRelaysOff();
+    }
+    else
+    {
+      SerialMgr->WriteDebug("COMMAND NOT FOUND!");
+    }
   }
 }

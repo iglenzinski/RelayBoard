@@ -70,6 +70,15 @@ uint8_t RelayManager::TurnRelayOff(uint8_t RelayNum)
   return 0;
 }
 
+uint8_t RelayManager::TurnAllRelaysOff()
+{
+  for (int RelayNum = 0; RelayNum < m_RelayCount; RelayNum++)
+  {
+    TurnRelayOff(RelayNum);
+  }
+  return 0;
+}
+
 uint8_t RelayManager::ToggleRelay(uint8_t RelayNum)
 {
   m_pSerialManager->WriteDebug("RelayManager::ToggleRelay - Starting Relay Toggle");

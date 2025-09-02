@@ -24,15 +24,15 @@ void SerialManager::WriteDebug(char* Message)
   }
 }
 
-bool SerialManager::IsDataAvailable()
+uint8_t SerialManager::IsDataAvailable()
 {
   if (Serial.available() > 0)
   {
-    return true;
+    return Serial.available();
   }
   else
   {
-    return false;
+    return 0;
   }
 }
 

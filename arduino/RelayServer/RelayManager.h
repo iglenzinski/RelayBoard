@@ -23,6 +23,7 @@ class RelayManager
   uint8_t AddRelay(uint8_t RelayNum, volatile uint8_t *DDRReg, volatile uint8_t *PortReg, uint8_t PinNum, bool LowLevelTrigger = false);
   uint8_t TurnRelayOn(uint8_t RelayNum);
   uint8_t TurnRelayOff(uint8_t RelayNum);
+  uint8_t TurnAllRelaysOff();
   uint8_t ToggleRelay(uint8_t RelayNum);
 };
 
