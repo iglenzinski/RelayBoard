@@ -1,0 +1,46 @@
+﻿<Window x:Class="AppRelayControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppRelayControl"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="624" Width="772">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open"/>
+                <Separator/>
+                <MenuItem Header="_Import"/>
+                <MenuItem Header="E_xport"/>
+                <Separator/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="All _On"/>
+                <MenuItem Header="All O_ff"/>
+            </MenuItem>
+        </Menu>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="LightGray">
+            <Label Name="lblComPort" Margin="5,5,0,5">Select COM Port:</Label>
+            <ComboBox Name="cboComPort" Margin="5" Width="200" SelectionChanged="cboComPort_SelectionChanged"></ComboBox>
+            <Button Name="btnStartCom" Margin="0,5,0,5" Width="50" IsEnabled="False" Click="btnStartCom_Click">Start</Button>
+        </StackPanel>
+        <Grid Name="ButtonGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+    </DockPanel>
+</Window>
