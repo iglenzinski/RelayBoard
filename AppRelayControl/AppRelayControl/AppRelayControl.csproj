@@ -7,15 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="System.IO.Ports" Version="9.0.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Controller_icon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
