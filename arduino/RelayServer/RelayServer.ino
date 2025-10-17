@@ -7,6 +7,7 @@
 #include <Arduino.h>
 
 // #define DEBUG
+
 // Configuration definition
 #define ARDUINO_MEGA_16_RELAYS
 // #define ARDUINO_MAGE_8_RELAYS
@@ -93,24 +94,24 @@ uint8_t Command = 0;
 uint8_t Relay = 0;
 
 void loop() {
-  if(SerialMgr->IsDataAvailable())
+  if(SerialMgr->IsDataAvailable(1))
   {
     Command = SerialMgr->ReadByte();
     if (Command == 1)
     {
-      delay(20);
+      SerialMgr->IsDataAvailable(1);
       Relay = SerialMgr->ReadByte();
       RelayMgr->ToggleRelay(Relay);
     }
     else if (Command == 2)
     {
-      delay(20);
+      SerialMgr->IsDataAvailable(1);
       Relay = SerialMgr->ReadByte();
       RelayMgr->TurnRelayOn(Relay);      
     }    
     else if (Command == 3)
     {
-      delay(20);
+      SerialMgr->IsDataAvailable(1);
       Relay = SerialMgr->ReadByte();
       RelayMgr->TurnRelayOff(Relay);
     }
@@ -118,9 +119,29 @@ void loop() {
     {
       RelayMgr->TurnAllRelaysOff();
     }
+    else if (Command == 5)
+    {
+      SerialMgr->IsDataAvailable(1);
+      Relay = SerialMgr->ReadByte();
+      SerialMgr->WriteByte(RelayMgr->GetRelayOrder(Relay)+48)
+    }
+    else if (Command == 6)
+    {
+      SerialMgr->IsDataAvailable(1);
+      Relay = SerialMgr->ReadByte();
+      SerialMgr->WriteByte(RelayMgr->GetRelayName(Relay))
+    }
+    else if (Command == 7)
+    {
+      SerialMgr->IsDataAvailable(2);
+      Relay = SerialMgr->ReadByte();
+      uint8_t Order = SerialMgr->ReadByte();
+      RelayMgr->SetRelayOrder(Relay, Order);
+    }
     else
     {
       SerialMgr->WriteDebug("COMMAND NOT FOUND!");
     }
   }
+  RelayMgr->SavePendingChanges();
 }

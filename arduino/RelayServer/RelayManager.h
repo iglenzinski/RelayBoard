@@ -5,6 +5,7 @@
 #ifndef RELAYMANAGER_H
 #define RELAYMANAGER_H
 
+#define STABLE_TIMEOUT 10000
 class RelayManager
 {
   private:
@@ -15,6 +16,9 @@ class RelayManager
   RelayDataManager* m_pRelayData;
   Relay** m_pVecRelays;
 
+  uint32_t m_StabilizationTimeout;
+  uint32_t m_LastChangeTime;
+  bool m_PendingChangeFlag;
 
   public:
   RelayManager(SerialManager* SerialManager, uint8_t RelayCount, uint8_t MaxRelayOn, uint16_t MinAddress, uint16_t MaxAddress);
@@ -23,8 +27,14 @@ class RelayManager
   uint8_t AddRelay(uint8_t RelayNum, volatile uint8_t *DDRReg, volatile uint8_t *PortReg, uint8_t PinNum, bool LowLevelTrigger = false);
   uint8_t TurnRelayOn(uint8_t RelayNum);
   uint8_t TurnRelayOff(uint8_t RelayNum);
-  uint8_t TurnAllRelaysOff();
   uint8_t ToggleRelay(uint8_t RelayNum);
+  uint8_t TurnAllRelaysOff();
+  uint8_t SetRelayName(uint8_t RelayName, char* Name);
+  char* GetRelayName(uint8_t RelayName);
+  uint8_t SetRelayOrder(uint8_t RelayName, uint8_t Order);
+  uint8_t GetRelayOrder(uint8_t RelayName);
+  uint8_t SavePendingChanges();
+  bool IsStateStable();
 };
 
 #endif // RELAYMANAGER_H

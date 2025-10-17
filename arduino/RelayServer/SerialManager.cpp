@@ -24,19 +24,48 @@ void SerialManager::WriteDebug(char* Message)
   }
 }
 
-uint8_t SerialManager::IsDataAvailable()
+void SerialManager::WriteDebug(uint32_t Message)
 {
-  if (Serial.available() > 0)
+  if (m_Debug)
   {
-    return Serial.available();
+    Serial.println(Message);
+  }
+}
+
+uint8_t SerialManager::IsDataAvailable(uint8_t Bytes)
+{
+  if (Serial.available() >= Bytes)
+  {
+    return true;  
   }
   else
   {
-    return 0;
+    return false;
   }
+}
+
+uint8_t SerialManager::GetBytesAvailable()
+{
+  return Serail.available();
 }
 
 uint8_t SerialManager::ReadByte()
 {
+  // return Serial.read();
+  return Serial.read()-48;
+}
+
+uint8_t SerialManager::ReadBytes()
+{
   return Serial.read();
+}
+
+void SerialManager::WriteByte(uint8_t Byte)
+{
+  Serial.write(Byte);
+}
+
+void SerialManager::WriteBytes(uint8_t Byte)
+{
+  Serial.Write(Byte);
 }

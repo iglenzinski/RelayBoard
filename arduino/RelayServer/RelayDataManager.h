@@ -4,13 +4,13 @@
 #ifndef RELAYDATAMANAGER_H
 #define RELAYDATAMANAGER_H
 
-#define DATA_VERSION 2
+#define DATA_VERSION 1
 #define RELAY_NAME_LEN 100
 
 #define DEFAULT_NAME ""
-#define DEFAULT_VALUE 0 //StoredRelayState.RELAY_OFF
+#define DEFAULT_STATE 0 //RelayState.RELAY_OFF
 
-enum StoredRelayState {
+enum RelayState {
   RELAY_OFF,
   RELAY_ON,
   RELAY_DISABLED
@@ -27,7 +27,7 @@ struct RelayData
 {
   char Name[RELAY_NAME_LEN];
   uint8_t Order;
-  uint8_t Value;
+  uint8_t State;
 };
 
 class RelayDataManager
@@ -40,14 +40,22 @@ class RelayDataManager
   SerialManager *m_pSerialManager;
   RelayDataSettings *m_pSettingsData;
   RelayData **m_pVecRelayData;
-  uint8_t SetRelayDataSettings(RelayDataSettings Settings);
-  uint8_t GetStoredRelayDataSettings();
-  uint8_t SetRelayData(uint8_t RelayNum, RelayData Data);
-  uint8_t GetStoredRelayData(uint8_t RelayNum);
+  uint8_t RetrieeRelayDataSettings();
+  uint8_t StoreRelayDataSettings();
 
+  uint8_t RetrieveRelayData();
+  
   public:
   RelayDataManager(SerialManager* SerialManager, uint16_t MinAddress, uint16_t MaxAddress, uint8_t RelayCount);
   uint8_t InitRelayData();
+  uint8_t SetRelayName(uint8_t RelayNum, char* Name);
+  char* GetRelayName(uint8_t RelayNum);
+  uint8_t SetRelayOrder(uint8_t RelayNum, unit8_t Order);
+  uint8_t GetRelayOrder(uint8_t RelayNum);
+  uint8_t SetRelayState(uint8_t RelayNum, RelayState State);
+  RelayState GetRelayState(uint8_t RelayNum);
+
+  uint8_t StoreRelayData();
 };
 
 #endif // RELAYDATAMANAGER_H
