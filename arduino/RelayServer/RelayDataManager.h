@@ -44,7 +44,7 @@ class RelayDataManager
   uint8_t StoreRelayDataSettings();
 
   uint8_t RetrieveRelayData();
-  
+
   public:
   RelayDataManager(SerialManager* SerialManager, uint16_t MinAddress, uint16_t MaxAddress, uint8_t RelayCount);
   uint8_t InitRelayData();

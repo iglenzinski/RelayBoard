@@ -58,7 +58,7 @@ uint8_t RelayDataManager::InitRelayData()
   }
   else
   {
-    if(RetrieveRelayData() != 0)
+    if (RetrieveRelayData() != 0)
     {
       m_pSerialManager->WriteDebug("RelayDataManager::InitRelayData - Failed Getting Relay Data");
       return 1;
@@ -112,7 +112,7 @@ uint8_t RelayDataManager::RetrieveRelayDataSettings()
 }
 
 ////////////////////////////////////////////////////////////////////////////
-uint8_t RelayDataManager::StoreRelayData(uint8_t RelayNum, RelayData Data)
+uint8_t RelayDataManager::StoreRelayData()
 {
   m_pSerialManager->WriteDebug("RelayDataManager::StoreRelayData - Setting Relay Data")
   for (uint8_t RelayIndex = 0; RelayIndex < m_RelayCount; RelayIndex++)
@@ -121,7 +121,7 @@ uint8_t RelayDataManager::StoreRelayData(uint8_t RelayNum, RelayData Data)
     if ((Addr >= m_MinEEPROMAddress) && ((Addr + sizeof(struct RelayData)) <= m_MaxEEPROMAddress))
     {
       EEPROM.put(Addr, *m_pVecRelayData[RelayIndex]);
-      
+
       // TURNING OFF READBACK FOR NOW UNTIL IT CAN BE DONE PER RELAY AGAIN!
       // RelayData Data = *m_pVecRelayData[RelayIndex];
       // EEPROM.put(Addr, Data);
@@ -157,9 +157,9 @@ uint8_t RelayDataManager::RetrieveRelayData()
       m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - ERROR! Address Out Of Range!");
       return 1;
     }
-    m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - Relay Data Retrieved Successfully");
-    return 0;
   }
+  m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - Relay Data Retrieved Successfully");
+  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////

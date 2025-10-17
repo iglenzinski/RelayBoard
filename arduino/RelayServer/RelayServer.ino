@@ -123,7 +123,7 @@ void loop() {
     {
       while(!SerialMgr->IsDataAvailable(1));
       Relay = SerialMgr->ReadByte();
-      SerialMgr->WriteByte(RelayMgr->GetRelayOrder(Relay)+48)
+      SerialMgr->WriteByte(RelayMgr->GetRelayOrder(Relay)+48);
     }
     else if (Command == 6)
     {
