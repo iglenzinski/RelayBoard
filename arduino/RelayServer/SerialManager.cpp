@@ -1,21 +1,25 @@
 #include "SerialManager.h"
 
+////////////////////////////////////////////////////////////////////////////
 SerialManager::SerialManager(unsigned long BaudRate, bool Debug)
 {
   m_Debug = Debug;
   Serial.begin(BaudRate);
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteString(char* Message)
 {
   Serial.println(Message);
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteString(char Message)
 {
   Serial.println(Message);
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteDebug(char* Message)
 {
   if (m_Debug)
@@ -24,6 +28,7 @@ void SerialManager::WriteDebug(char* Message)
   }
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteDebug(uint32_t Message)
 {
   if (m_Debug)
@@ -32,11 +37,12 @@ void SerialManager::WriteDebug(uint32_t Message)
   }
 }
 
-uint8_t SerialManager::IsDataAvailable(uint8_t Bytes)
+////////////////////////////////////////////////////////////////////////////
+bool SerialManager::IsDataAvailable(uint8_t Bytes)
 {
   if (Serial.available() >= Bytes)
   {
-    return true;  
+    return true;
   }
   else
   {
@@ -44,28 +50,33 @@ uint8_t SerialManager::IsDataAvailable(uint8_t Bytes)
   }
 }
 
+////////////////////////////////////////////////////////////////////////////
 uint8_t SerialManager::GetBytesAvailable()
 {
-  return Serail.available();
+  return Serial.available();
 }
 
+////////////////////////////////////////////////////////////////////////////
 uint8_t SerialManager::ReadByte()
 {
   // return Serial.read();
   return Serial.read()-48;
 }
 
+////////////////////////////////////////////////////////////////////////////
 uint8_t SerialManager::ReadBytes()
 {
   return Serial.read();
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteByte(uint8_t Byte)
 {
   Serial.write(Byte);
 }
 
+////////////////////////////////////////////////////////////////////////////
 void SerialManager::WriteBytes(uint8_t Byte)
 {
-  Serial.Write(Byte);
+  Serial.write(Byte);
 }

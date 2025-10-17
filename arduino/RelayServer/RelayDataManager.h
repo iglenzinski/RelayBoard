@@ -40,7 +40,7 @@ class RelayDataManager
   SerialManager *m_pSerialManager;
   RelayDataSettings *m_pSettingsData;
   RelayData **m_pVecRelayData;
-  uint8_t RetrieeRelayDataSettings();
+  uint8_t RetrieveRelayDataSettings();
   uint8_t StoreRelayDataSettings();
 
   uint8_t RetrieveRelayData();
@@ -50,7 +50,7 @@ class RelayDataManager
   uint8_t InitRelayData();
   uint8_t SetRelayName(uint8_t RelayNum, char* Name);
   char* GetRelayName(uint8_t RelayNum);
-  uint8_t SetRelayOrder(uint8_t RelayNum, unit8_t Order);
+  uint8_t SetRelayOrder(uint8_t RelayNum, uint8_t Order);
   uint8_t GetRelayOrder(uint8_t RelayNum);
   uint8_t SetRelayState(uint8_t RelayNum, RelayState State);
   RelayState GetRelayState(uint8_t RelayNum);

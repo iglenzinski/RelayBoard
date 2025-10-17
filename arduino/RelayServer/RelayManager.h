@@ -6,6 +6,7 @@
 #define RELAYMANAGER_H
 
 #define STABLE_TIMEOUT 10000
+
 class RelayManager
 {
   private:
@@ -29,10 +30,10 @@ class RelayManager
   uint8_t TurnRelayOff(uint8_t RelayNum);
   uint8_t ToggleRelay(uint8_t RelayNum);
   uint8_t TurnAllRelaysOff();
-  uint8_t SetRelayName(uint8_t RelayName, char* Name);
-  char* GetRelayName(uint8_t RelayName);
-  uint8_t SetRelayOrder(uint8_t RelayName, uint8_t Order);
-  uint8_t GetRelayOrder(uint8_t RelayName);
+  uint8_t SetRelayName(uint8_t RelayNum, char* Name);
+  char* GetRelayName(uint8_t RelayNum);
+  uint8_t SetRelayOrder(uint8_t RelayNum, uint8_t Order);
+  uint8_t GetRelayOrder(uint8_t RelayNum);
   uint8_t SavePendingChanges();
   bool IsStateStable();
 };

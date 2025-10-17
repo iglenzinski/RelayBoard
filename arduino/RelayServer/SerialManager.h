@@ -18,6 +18,7 @@ class SerialManager
   void WriteDebug(char* Message);
   void WriteDebug(uint32_t Message);
   bool IsDataAvailable(uint8_t Bytes);
+  uint8_t GetBytesAvailable();
   uint8_t ReadByte();
   uint8_t ReadBytes();
 };

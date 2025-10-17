@@ -9,7 +9,7 @@ RelayManager::RelayManager(SerialManager* SerialManager, uint8_t RelayCount, uin
   m_pSerialManager = SerialManager;
   m_pRelayData = new RelayDataManager(SerialManager, MinAddress, MaxAddress, m_RelayCount);
   m_pVecRelays = new Relay*[m_RelayCount];
-  
+
   m_StabilizationTimeout = STABLE_TIMEOUT;
   m_LastChangeTime = 0;
   m_PendingChangeFlag = false;
@@ -71,13 +71,17 @@ uint8_t RelayManager::TurnRelayOn(uint8_t RelayNum)
       m_LastChangeTime = millis();
       return 0;
     }
+    else
+    {
+      m_pSerialManager->WriteDebug("RelayManager::TurnRelayOn - Max Relays Already On");
+      return 1;
+    }
   }
   else
   {
     m_pSerialManager->WriteDebug("RelayManager::TurnRelayOn - Relay Out Of Range");
     return 1;
   }
-  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -123,7 +127,6 @@ uint8_t RelayManager::ToggleRelay(uint8_t RelayNum)
   {
     m_pSerialManager->WriteDebug("RelayManager::ToggleRelay - Relay Out Of Range");
   }
-  
   return 0;
 }
 
@@ -138,7 +141,7 @@ uint8_t RelayManager::TurnAllRelaysOff()
 }
 
 ////////////////////////////////////////////////////////////////////////////
-uint RelayManager::SetRelayName(uint8_t RelayNum, char* Name)
+uint8_t RelayManager::SetRelayName(uint8_t RelayNum, char* Name)
 {
   m_PendingChangeFlag = true;
   m_LastChangeTime = millis();
@@ -146,7 +149,7 @@ uint RelayManager::SetRelayName(uint8_t RelayNum, char* Name)
 }
 
 ////////////////////////////////////////////////////////////////////////////
-char* RelayManager::GetRelayState(uint8_t RelayNum)
+char* RelayManager::GetRelayName(uint8_t RelayNum)
 {
   return m_pRelayData->GetRelayName(RelayNum);
 }

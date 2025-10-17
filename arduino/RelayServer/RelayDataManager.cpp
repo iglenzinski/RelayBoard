@@ -34,6 +34,7 @@ uint8_t RelayDataManager::InitRelayData()
     m_pSettingsData->DataVersion = DATA_VERSION;
     m_pSettingsData->RelayCount = m_RelayCount;
     m_pSettingsData->RelayNameLen = RELAY_NAME_LEN;
+
     if (StoreRelayDataSettings() != 0)
     {
       m_pSerialManager->WriteDebug("RelayDataManager::InitRelayData - Failed Writing Relay Data Settings");
@@ -57,7 +58,7 @@ uint8_t RelayDataManager::InitRelayData()
   }
   else
   {
-    if(retrieveRelayData() != 0)
+    if(RetrieveRelayData() != 0)
     {
       m_pSerialManager->WriteDebug("RelayDataManager::InitRelayData - Failed Getting Relay Data");
       return 1;
@@ -76,7 +77,7 @@ uint8_t RelayDataManager::StoreRelayDataSettings()
   {
     RelayDataSettings Settings = *m_pSettingsData;
     EEPROM.put(Addr, Settings);
-    if(GetStoredRelayDataSettings() != 0 || m_pSettingsData->DataVersion != Settings.DataVersion || m_pSettingsData->RelayCount != Settings.RelayCount || m_pSettingsData->RelayNameLen != Settings.RelayNameLen)
+    if(RetrieveRelayDataSettings() != 0 || m_pSettingsData->DataVersion != Settings.DataVersion || m_pSettingsData->RelayCount != Settings.RelayCount || m_pSettingsData->RelayNameLen != Settings.RelayNameLen)
     {
       m_pSerialManager->WriteDebug("RelayDataManager::StoreRelayDataSettings - ERROR! Read Back Failed!");
       return 1;
@@ -113,6 +114,7 @@ uint8_t RelayDataManager::RetrieveRelayDataSettings()
 ////////////////////////////////////////////////////////////////////////////
 uint8_t RelayDataManager::StoreRelayData(uint8_t RelayNum, RelayData Data)
 {
+  m_pSerialManager->WriteDebug("RelayDataManager::StoreRelayData - Setting Relay Data")
   for (uint8_t RelayIndex = 0; RelayIndex < m_RelayCount; RelayIndex++)
   {
     uint16_t Addr = m_MinEEPROMAddress + sizeof(struct RelayDataSettings) + (RelayIndex * sizeof(struct RelayData));
@@ -143,18 +145,21 @@ uint8_t RelayDataManager::StoreRelayData(uint8_t RelayNum, RelayData Data)
 uint8_t RelayDataManager::RetrieveRelayData()
 {
   m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - Getting Relay Data");
-  uint16_t Addr = m_MinEEPROMAddress + sizeof(struct RelayDataSettings) + (RelayNum * sizeof(struct RelayData));
-  if ((Addr >= m_MinEEPROMAddress) && ((Addr + sizeof(struct RelayData)) <= m_MaxEEPROMAddress))
+  for (uint8_t RelayIndex = 0; RelayIndex < m_RelayCount; RelayIndex++)
   {
-    EEPROM.get(Addr, *m_pVecRelayData[RelayNum]);
+    uint16_t Addr = m_MinEEPROMAddress + sizeof(struct RelayDataSettings) + (RelayIndex * sizeof(struct RelayData));
+    if ((Addr >= m_MinEEPROMAddress) && ((Addr + sizeof(struct RelayData)) <= m_MaxEEPROMAddress))
+    {
+      EEPROM.get(Addr, *m_pVecRelayData[RelayIndex]);
+    }
+    else
+    {
+      m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - ERROR! Address Out Of Range!");
+      return 1;
+    }
+    m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - Relay Data Retrieved Successfully");
+    return 0;
   }
-  else
-  {
-    m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - ERROR! Address Out Of Range!");
-    return 1;
-  }
-  m_pSerialManager->WriteDebug("RelayDataManager::RetrieveRelayData - Relay Data Retrieved Successfully");
-  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -177,7 +182,7 @@ uint8_t RelayDataManager::SetRelayName(uint8_t RelayNum, char* Name)
 ////////////////////////////////////////////////////////////////////////////
 char* RelayDataManager::GetRelayName(uint8_t RelayNum)
 {
-  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayName - Getting Relay Name")
+  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayName - Getting Relay Name");
   if (RelayNum <= m_RelayCount)
   {
     return m_pVecRelayData[RelayNum - 1]->Name;
@@ -185,7 +190,7 @@ char* RelayDataManager::GetRelayName(uint8_t RelayNum)
   else
   {
     m_pSerialManager->WriteDebug("RelayDataManager::GetRelayName - Relay Out Of Range");
-    return "";    
+    return "";
   }
 }
 
@@ -195,7 +200,7 @@ uint8_t RelayDataManager::SetRelayOrder(uint8_t RelayNum, uint8_t Order)
   m_pSerialManager->WriteDebug("RelayDataManager::SetRelayOrder - Setting Relay Order");
   if (RelayNum <= m_RelayCount)
   {
-    m_pVecRelayData[RelayNum - 1]->Order, Order;
+    m_pVecRelayData[RelayNum - 1]->Order = Order;
     m_pSerialManager->WriteDebug("RelayDataManager::SetRelayOrder - New Order Set");
     return 0;
   }
@@ -209,7 +214,7 @@ uint8_t RelayDataManager::SetRelayOrder(uint8_t RelayNum, uint8_t Order)
 ////////////////////////////////////////////////////////////////////////////
 uint8_t RelayDataManager::GetRelayOrder(uint8_t RelayNum)
 {
-  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayOrder - Getting Relay Order")
+  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayOrder - Getting Relay Order");
   if (RelayNum <= m_RelayCount)
   {
     return m_pVecRelayData[RelayNum - 1]->Order;
@@ -217,7 +222,7 @@ uint8_t RelayDataManager::GetRelayOrder(uint8_t RelayNum)
   else
   {
     m_pSerialManager->WriteDebug("RelayDataManager::GetRelayOrder - Relay Out Of Range");
-    return 0xFF;    
+    return 0xFF;
   }
 }
 
@@ -241,7 +246,7 @@ uint8_t RelayDataManager::SetRelayState(uint8_t RelayNum, RelayState State)
 ////////////////////////////////////////////////////////////////////////////
 RelayState RelayDataManager::GetRelayState(uint8_t RelayNum)
 {
-  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayState - Getting Relay State")
+  m_pSerialManager->WriteDebug("RelayDataManager::GetRelayState - Getting Relay State");
   if (RelayNum <= m_RelayCount)
   {
     return (RelayState)m_pVecRelayData[RelayNum - 1]->State;
@@ -249,6 +254,6 @@ RelayState RelayDataManager::GetRelayState(uint8_t RelayNum)
   else
   {
     m_pSerialManager->WriteDebug("RelayDataManager::GetRelayState - Relay Out Of Range");
-    return 0xFF;    
+    return 0xFF;
   }
 }
